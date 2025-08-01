@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { create } from 'zustand';
 import { useTranslation } from 'react-i18next';
-import Joyride, { STATUS } from 'react-joyride';
 import { toast } from 'sonner';
 
 const { Title, Paragraph } = Typography;

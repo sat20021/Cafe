@@ -31,7 +31,6 @@
     "react-i18next": "^15.6.0",
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^9.16.0",
-    "react-joyride": "^2.9.3",
     "react-lazyload": "^3.2.1",
     "react-router-dom": "^7.6.3",
     "react-scroll": "^1.9.3",
@@ -61,4 +60,4 @@
     "tw-animate-css": "^1.3.5",
     "vite": "^7.0.4"
   }
-}
+} 
