@@ -1,0 +1,737 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Custom base styles */
+body {
+  margin: 0;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-top: 80px; /* Account for fixed navbar */
+}
+
+/* Navbar fixed positioning - using more specific selectors */
+nav[style*="position: fixed"] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  width: 100% !important;
+}
+
+/* Responsive navbar height adjustments */
+@media (max-width: 768px) {
+  body {
+    padding-top: 70px; /* Smaller padding for mobile */
+  }
+  
+  nav[style*="position: fixed"] {
+    min-height: 70px;
+  }
+}
+
+@media (min-width: 769px) {
+  body {
+    padding-top: 80px; /* Larger padding for desktop */
+  }
+  
+  nav[style*="position: fixed"] {
+    min-height: 80px;
+  }
+}
+
+/* Custom component styles can be added here using @apply directive */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.147 0.004 49.25);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.147 0.004 49.25);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.147 0.004 49.25);
+  --primary: oklch(0.216 0.006 56.043);
+  --primary-foreground: oklch(0.985 0.001 106.423);
+  --secondary: oklch(0.97 0.001 106.424);
+  --secondary-foreground: oklch(0.216 0.006 56.043);
+  --muted: oklch(0.97 0.001 106.424);
+  --muted-foreground: oklch(0.553 0.013 58.071);
+  --accent: oklch(0.97 0.001 106.424);
+  --accent-foreground: oklch(0.216 0.006 56.043);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.923 0.003 48.717);
+  --input: oklch(0.923 0.003 48.717);
+  --ring: oklch(0.709 0.01 56.259);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0.001 106.423);
+  --sidebar-foreground: oklch(0.147 0.004 49.25);
+  --sidebar-primary: oklch(0.216 0.006 56.043);
+  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-accent: oklch(0.97 0.001 106.424);
+  --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
+  --sidebar-border: oklch(0.923 0.003 48.717);
+  --sidebar-ring: oklch(0.709 0.01 56.259);
+}
+
+.dark {
+  --background: oklch(0.147 0.004 49.25);
+  --foreground: oklch(0.985 0.001 106.423);
+  --card: oklch(0.216 0.006 56.043);
+  --card-foreground: oklch(0.985 0.001 106.423);
+  --popover: oklch(0.216 0.006 56.043);
+  --popover-foreground: oklch(0.985 0.001 106.423);
+  --primary: oklch(0.923 0.003 48.717);
+  --primary-foreground: oklch(0.216 0.006 56.043);
+  --secondary: oklch(0.268 0.007 34.298);
+  --secondary-foreground: oklch(0.985 0.001 106.423);
+  --muted: oklch(0.268 0.007 34.298);
+  --muted-foreground: oklch(0.709 0.01 56.259);
+  --accent: oklch(0.268 0.007 34.298);
+  --accent-foreground: oklch(0.985 0.001 106.423);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.553 0.013 58.071);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.216 0.006 56.043);
+  --sidebar-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-accent: oklch(0.268 0.007 34.298);
+  --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.553 0.013 58.071);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-10px); }
+  80% { transform: translateX(10px); }
+  100% { transform: translateX(0); }
+}
+.shake:hover {
+  animation: shake 0.7s;
+}
+
+/* Enhanced button animations */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% { transform: translateY(0); }
+  40%, 43% { transform: translateY(-8px); }
+  70% { transform: translateY(-4px); }
+}
+
+.button-hover-effect {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.button-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.6s ease;
+}
+
+.button-hover-effect:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.button-hover-effect:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.button-hover-effect:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Centered ripple effect for buttons */
+.button-ripple {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.button-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.button-ripple:hover::after {
+  width: 400px;
+  height: 400px;
+}
+
+.button-ripple:active::after {
+  background: rgba(255, 255, 255, 0.5);
+  transition: width 0.1s, height 0.1s;
+}
+
+/* Toggle button hover effects */
+.toggle-button-hover {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.toggle-button-hover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(34, 197, 94, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s ease;
+}
+
+.toggle-button-hover:hover::before {
+  width: 200px;
+  height: 200px;
+}
+
+.toggle-button-hover.admin::before {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Input focus animations */
+.input-focus-effect {
+  transition: all 0.3s ease;
+}
+
+.input-focus-effect:focus {
+  transform: scale(1.02);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+/* Floating animation for decorative elements */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  50% { 
+    transform: translateY(-10px) rotate(2deg); 
+  }
+}
+
+/* Theme Toggle Styles */
+.theme-toggle {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle-container {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sun-icon,
+.moon-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: white;
+}
+
+.sun-icon {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.moon-icon {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.sun-icon.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.moon-icon.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* Dark mode specific theme toggle */
+.dark .theme-toggle {
+  background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+.dark .theme-toggle:hover {
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.4);
+}
+
+/* Dark Mode Enhancements */
+.dark-mode {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+/* CSS Variables for theme switching */
+:root {
+  --hero-bg: linear-gradient(135deg, #f0fff4 0%, #fff7e6 50%, #f0f9ff 100%);
+  --section-bg: linear-gradient(135deg, #fffbe6 0%, #f6ffed 100%);
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(255, 255, 255, 0.3);
+  --text-primary: #262626;
+  --text-secondary: #595959;
+}
+
+.dark-mode {
+  --hero-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  --section-bg: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  --card-bg: rgba(30, 41, 59, 0.8);
+  --card-border: rgba(51, 65, 85, 0.3);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+}
+
+.dark-mode nav {
+  background-color: #1e293b !important;
+  border-bottom: 1px solid #334155;
+}
+
+.dark-mode .bg-white {
+  background-color: #1e293b !important;
+}
+
+.dark-mode .text-gray-700 {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .text-gray-600 {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .bg-gray-100 {
+  background-color: #334155 !important;
+}
+
+.dark-mode .bg-gray-50 {
+  background-color: #475569 !important;
+}
+
+.dark-mode .hover\:bg-gray-100:hover {
+  background-color: #475569 !important;
+}
+
+.dark-mode .hover\:bg-gray-200:hover {
+  background-color: #64748b !important;
+}
+
+.dark-mode .border {
+  border-color: #475569 !important;
+}
+
+.dark-mode input {
+  background-color: #334155 !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+
+.dark-mode input::placeholder {
+  color: #94a3b8 !important;
+}
+
+.dark-mode .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Smooth transitions for theme switching */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Navbar scroll effects */
+nav {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+nav.scrolled {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode nav.scrolled {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark mode for specific components */
+.dark-mode .bg-green-100 {
+  background-color: #064e3b !important;
+}
+
+.dark-mode .text-green-700 {
+  color: #6ee7b7 !important;
+}
+
+.dark-mode .hover\:bg-green-50:hover {
+  background-color: #065f46 !important;
+}
+
+.dark-mode .hover\:text-green-600:hover {
+  color: #34d399 !important;
+}
+
+.dark-mode .bg-green-600 {
+  background-color: #059669 !important;
+}
+
+.dark-mode .hover\:bg-green-700:hover {
+  background-color: #047857 !important;
+}
+
+.dark-mode .bg-orange-500 {
+  background-color: #ea580c !important;
+}
+
+.dark-mode .bg-black {
+  background-color: #0f172a !important;
+}
+
+.dark-mode .bg-black\/40 {
+  background-color: rgba(15, 23, 42, 0.4) !important;
+}
+
+/* Footer dark mode */
+.dark-mode footer {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+.dark-mode footer a {
+  color: #fbbf24 !important;
+}
+
+.dark-mode footer a:hover {
+  color: #f59e0b !important;
+}
+
+/* Additional dark mode enhancements */
+.dark-mode .ant-card {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+}
+
+.dark-mode .ant-card-head {
+  background-color: #334155 !important;
+  border-bottom-color: #475569 !important;
+}
+
+.dark-mode .ant-card-head-title {
+  color: #f8fafc !important;
+}
+
+.dark-mode .ant-typography {
+  color: #f8fafc !important;
+}
+
+.dark-mode .ant-typography h1,
+.dark-mode .ant-typography h2,
+.dark-mode .ant-typography h3,
+.dark-mode .ant-typography h4,
+.dark-mode .ant-typography h5 {
+  color: #f8fafc !important;
+}
+
+.dark-mode .ant-tag {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f8fafc !important;
+}
+
+.dark-mode .ant-empty-description {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .ant-spin-dot-item {
+  background-color: #fbbf24 !important;
+}
+
+/* Dark mode for Ant Design components */
+.dark-mode .ant-btn {
+  border-color: #475569 !important;
+}
+
+.dark-mode .ant-btn-default {
+  background-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.dark-mode .ant-btn-default:hover {
+  background-color: #475569 !important;
+  border-color: #64748b !important;
+}
+
+.dark-mode .ant-input {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f8fafc !important;
+}
+
+.dark-mode .ant-input:focus {
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2) !important;
+}
+
+.dark-mode .ant-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Force navbar to stay fixed - highest priority */
+nav.bg-white.shadow-lg.fixed.top-0.left-0.right-0 {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  width: 100% !important;
+  transform: none !important;
+}
+
+/* Additional navbar fixes to ensure it stays fixed */
+nav.bg-white {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  width: 100% !important;
+}
+
+/* Override any potential Tailwind conflicts */
+.fixed {
+  position: fixed !important;
+}
+
+.top-0 {
+  top: 0 !important;
+}
+
+.left-0 {
+  left: 0 !important;
+}
+
+.right-0 {
+  right: 0 !important;
+}
+
+.z-50 {
+  z-index: 50 !important;
+}
+
+.z-1000 {
+  z-index: 1000 !important;
+}
+
+/* Glass morphism effects */
+.bg-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.backdrop-blur-glass {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.border-glass {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Dark mode glass morphism */
+.dark .bg-glass {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.dark .border-glass {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Social button variant */
+.btn-social {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.btn-social:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.dark .btn-social {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .btn-social:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Custom animations for registration page */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+/* Enhanced floating animations */
+@keyframes float-gentle {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  50% { 
+    transform: translateY(-15px) rotate(5deg); 
+  }
+}
+
+.animate-float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+/* Cake hover effects */
+.cake-layer {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cake-layer:hover {
+  transform: scale(1.05) rotate(0deg) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+ 
