@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
 
-const ProtectedRoute = ({ children, fallbackPath = '/auth' }) => {
-  const { user, loading } = useAuth();
+const ProtectedRoute = ({ children, fallbackPath = '/login' }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
+
+  useEffect(() => {
+    // Check for user data in localStorage
+    const storedUser = localStorage.getItem('currentUser');
+    const token = localStorage.getItem('token');
+    
+    if (storedUser && token) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
+      }
+    }
+    
+    setLoading(false);
+  }, []);
 
   // Show loading spinner while checking authentication
   if (loading) {
