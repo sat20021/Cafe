@@ -5,6 +5,13 @@ import coffeeSteam from './assets/lottie/coffee-steam.json';
 import coffeeBean from './assets/lottie/coffee-bean.json';
 import ContactCTA from './components/common/ContactCTA';
 import ThemeToggle from './components/common/ThemeToggle';
+import CookieConsent from './components/common/CookieConsent';
+import useCookieConsent from './hooks/useCookieConsent';
+import UserDropdown from './components/auth/UserDropdown';
+import LoginButton from './components/auth/LoginButton';
+import LoginModal from './components/auth/LoginModal';
+import cartService from './services/cartService';
+import { toast } from 'sonner';
 import About from './components/home/About';
 import Hero from './components/home/Hero';
 import TopProducts from './components/home/TopProducts';
@@ -21,12 +28,14 @@ import Testimonials from './pages/Testimonials';
 import Blog from './pages/Blog';
 import ContactUs from './pages/ContactUs';
 import FAQs from './pages/FAQs';
-import AuthPage from './pages/AuthPage';
+
 import testAnimation from './assets/lottie/test-animation.json';
 import Cart from './pages/Cart';
 import Profile from './pages/Profile';
 import Orders from './pages/Orders';
 import Register from './pages/Register';
+import Login from './pages/Login';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 import './App.css';
 
@@ -48,7 +57,7 @@ function Placeholder({ title, children }) {
 }
 
 function ProtectedRoute({ user, children }) {
-  if (!user) return <Navigate to="/auth" replace />;
+  if (!user) return <Navigate to="/login" replace />;
   return children;
 }
 
@@ -56,43 +65,80 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loginDropdown, setLoginDropdown] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [loginMode, setLoginMode] = useState('login');
   const [user, setUser] = useState(null); // null = not logged in
   const [cartCount, setCartCount] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const beanRef = useRef();
+  const { resetForTesting } = useCookieConsent();
 
-  // On app load, read user from localStorage
+  // On app load, read user from localStorage and load cart
   useEffect(() => {
     const stored = localStorage.getItem('currentUser');
-    if (stored) setUser(JSON.parse(stored));
+    if (stored) {
+      const userData = JSON.parse(stored);
+      setUser(userData);
+      // Load user's cart
+      const userCart = cartService.getUserCart(userData.id);
+      setCartCount(cartService.getCartCount(userData.id));
+    } else {
+      // Load guest cart
+      setCartCount(cartService.getCartCount());
+    }
   }, []);
 
-  // Mock login/logout
-  const handleLogin = (type) => {
-    setUser({ name: type === 'admin' ? 'Admin' : 'Customer' });
-    setLoginDropdown(false);
+  // Handle login success
+  const handleLoginSuccess = (userData) => {
+    setUser(userData);
+    // Merge guest cart with user cart
+    const mergedCart = cartService.mergeCartOnLogin(userData.id);
+    setCartCount(cartService.getCartCount(userData.id));
+    
+    // Show success message
+    toast.success(`Welcome back, ${userData.name}! Your cart has been synced.`);
   };
+
+  // Handle logout
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
+    // Clear cart count
+    setCartCount(0);
   };
+
+  // Handle opening login modal
+  const handleOpenLoginModal = (mode) => {
+    setLoginMode(mode);
+    setLoginModalOpen(true);
+  };
+
+  // Handle cart updates
+  const handleCartUpdate = () => {
+    if (user) {
+      setCartCount(cartService.getCartCount(user.id));
+    } else {
+      setCartCount(cartService.getCartCount());
+    }
+  };
+
+  // Listen for cart changes
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'miniCafeCart' || e.key?.startsWith('miniCafeUserCart')) {
+        handleCartUpdate();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [user]);
 
   // Close menus on route change
   useEffect(() => {
     setMenuOpen(false);
-    setLoginDropdown(false);
   }, [location.pathname]);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    const close = (e) => {
-      if (!e.target.closest('.login-dropdown')) setLoginDropdown(false);
-    };
-    if (loginDropdown) document.addEventListener('mousedown', close);
-    return () => document.removeEventListener('mousedown', close);
-  }, [loginDropdown]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -179,41 +225,12 @@ export default function App() {
             <ThemeToggle className="hidden lg:block" />
             {/* Language switcher (placeholder) */}
             <button className="hidden lg:block px-2 py-1 text-sm rounded bg-gray-100 hover:bg-gray-200">EN</button>
-            {/* Login/Register dropdown */}
-            <div className="relative login-dropdown">
-              <button
-                className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 flex items-center"
-                onClick={() => setLoginDropdown((v) => !v)}
-              >
-                {user ? (
-                  <div className="flex items-center">
-                    <span className="mr-2">👤</span>
-                    <span className="font-medium">{user.name}</span>
-                    <span className="ml-1 text-xs opacity-80">({user.role})</span>
-                  </div>
-                ) : (
-                  <span>Login</span>
-                )}
-                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
-              </button>
-              {loginDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
-                  {!user ? (
-                    <>
-                      <button className="block w-full text-left px-4 py-2 hover:bg-green-50" onClick={() => handleLogin('customer')}>Customer Login</button>
-                      <button className="block w-full text-left px-4 py-2 hover:bg-green-50" onClick={() => handleLogin('admin')}>Admin Login</button>
-                      <button className="block w-full text-left px-4 py-2 hover:bg-green-50" onClick={() => { setLoginDropdown(false); navigate('/register'); }}>Register</button>
-                    </>
-                  ) : (
-                    <>
-                      <button className="block w-full text-left px-4 py-2 hover:bg-green-50" onClick={() => navigate('/orders')}>My Orders</button>
-                      <button className="block w-full text-left px-4 py-2 hover:bg-green-50" onClick={() => navigate('/profile')}>My Profile</button>
-                      <button className="block w-full text-left px-4 py-2 hover:bg-green-50" onClick={handleLogout}>Logout</button>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
+            {/* Auth Section */}
+            {user ? (
+              <UserDropdown user={user} onLogout={handleLogout} />
+            ) : (
+              <LoginButton onOpenModal={handleOpenLoginModal} />
+            )}
             {/* Cart icon */}
             <button className="ml-2 relative p-2 rounded-full hover:bg-green-100 transition-colors" onClick={() => navigate('/cart')}>
               <span role="img" aria-label="cart" className="text-2xl">🛒</span>
@@ -257,17 +274,29 @@ export default function App() {
                   </label>
                 ))}
               </div>
-              <button className="w-full text-left px-4 py-2 hover:bg-green-50" onClick={() => { setLoginDropdown(true); setMenuOpen(false); }}>
-                {user ? (
+              {user ? (
+                <div className="w-full px-4 py-2">
                   <div className="flex items-center">
                     <span className="mr-2">👤</span>
                     <span className="font-medium">{user.name}</span>
-                    <span className="ml-1 text-xs opacity-80">({user.role})</span>
                   </div>
-                ) : (
-                  'Login / Register'
-                )}
-              </button>
+                  <div className="mt-2 space-y-1">
+                    <button className="w-full text-left px-2 py-1 text-sm hover:bg-green-50 rounded" onClick={() => { setMenuOpen(false); navigate('/orders'); }}>
+                      🛒 My Orders
+                    </button>
+                    <button className="w-full text-left px-2 py-1 text-sm hover:bg-green-50 rounded" onClick={() => { setMenuOpen(false); navigate('/profile'); }}>
+                      👤 Profile
+                    </button>
+                    <button className="w-full text-left px-2 py-1 text-sm hover:bg-red-50 text-red-600 rounded" onClick={() => { handleLogout(); setMenuOpen(false); }}>
+                      🚪 Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button className="w-full text-left px-4 py-2 hover:bg-green-50" onClick={() => { handleOpenLoginModal('login'); setMenuOpen(false); }}>
+                  Login / Register
+                </button>
+              )}
               <button className="w-full text-left px-4 py-2 hover:bg-green-50 flex items-center" onClick={() => { setMenuOpen(false); navigate('/cart'); }}>
                 <span role="img" aria-label="cart" className="text-2xl">🛒</span>
                 <span className="ml-2">Cart</span>
@@ -297,11 +326,13 @@ export default function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/faq" element={<FAQs />} />
-        <Route path="/auth" element={<AuthPage />} />
+
         <Route path="/cart" element={<Cart />} />
         <Route path="/orders" element={<ProtectedRoute user={user}><Orders /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute user={user}><Profile /></ProtectedRoute>} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       </Routes>
       <footer className="bg-gray-800 text-white py-8 text-center mt-12">
         <div className="mb-2">
@@ -402,6 +433,40 @@ export default function App() {
           </div>
         </div>
       </footer>
+      
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
+      
+      {/* Cookie Consent Popup */}
+      <CookieConsent />
+      
+      {/* Development Test Button - Only visible in development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
+          <button
+            onClick={resetForTesting}
+            className="px-3 py-2 text-xs bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors shadow-lg"
+            title="Reset cookie consent for testing"
+          >
+            🍪 Reset Cookie Consent
+          </button>
+          <button
+            onClick={() => {
+              localStorage.removeItem('cookieConsent');
+              localStorage.removeItem('cookieConsentDate');
+              window.location.reload();
+            }}
+            className="px-3 py-2 text-xs bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-lg"
+            title="Force show cookie banner"
+          >
+            🍪 Force Show Banner
+          </button>
+        </div>
+      )}
     </>
   );
 }

@@ -98,7 +98,7 @@ export const RegisterForm = () => {
         });
         
         setTimeout(() => {
-          navigate('/auth');
+          navigate('/login');
         }, 3000);
       }
     } catch (error) {
@@ -302,7 +302,7 @@ export const RegisterForm = () => {
             Already have an account?{" "}
             <button
               type="button"
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/login')}
               className="text-primary hover:underline font-medium"
             >
               Sign in

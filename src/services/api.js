@@ -33,7 +33,7 @@ api.interceptors.response.use(
       // Token expired or invalid
       localStorage.removeItem('token');
       localStorage.removeItem('currentUser');
-      window.location.href = '/auth';
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import RegisterForm from '../components/auth/RegisterForm';
-import { FaCoffee, FaBirthdayCake, FaStar, FaHeart, FaUsers, FaClock, FaLeaf, FaSmile, FaMusic, FaGem, FaGift, FaCrown } from 'react-icons/fa';
+import LoginForm from '../components/auth/LoginForm';
+import { FaCoffee, FaBirthdayCake, FaStar, FaHeart, FaUsers, FaClock, FaShieldAlt, FaUserCheck, FaLeaf, FaSmile, FaMusic, FaGem } from 'react-icons/fa';
 
-export default function Register() {
+export default function Login() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [particles, setParticles] = useState([]);
   const [floatingElements, setFloatingElements] = useState([]);
-  const [cakeLayers, setCakeLayers] = useState([]);
 
   // Mouse tracking for dynamic effects
   useEffect(() => {
@@ -20,46 +19,34 @@ export default function Register() {
   // Generate floating particles
   useEffect(() => {
     const generateParticles = () => {
-      const newParticles = Array.from({ length: 60 }, (_, i) => ({
+      const newParticles = Array.from({ length: 50 }, (_, i) => ({
         id: i,
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        size: Math.random() * 5 + 1,
-        speed: Math.random() * 3 + 0.5,
-        opacity: Math.random() * 0.6 + 0.1,
-        color: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#a8e6cf', '#dcedc1'][Math.floor(Math.random() * 8)]
+        size: Math.random() * 4 + 1,
+        speed: Math.random() * 2 + 0.5,
+        opacity: Math.random() * 0.5 + 0.1,
+        color: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'][Math.floor(Math.random() * 6)]
       }));
       setParticles(newParticles);
     };
 
     const generateFloatingElements = () => {
       const elements = [
-        { icon: FaCoffee, color: '#8B4513', size: 22, delay: 0 },
-        { icon: FaBirthdayCake, color: '#FF69B4', size: 20, delay: 0.5 },
-        { icon: FaStar, color: '#FFD700', size: 18, delay: 1 },
-        { icon: FaHeart, color: '#FF6B6B', size: 16, delay: 1.5 },
-        { icon: FaLeaf, color: '#32CD32', size: 14, delay: 2 },
-        { icon: FaSmile, color: '#FFA500', size: 17, delay: 2.5 },
-        { icon: FaMusic, color: '#9370DB', size: 15, delay: 3 },
-        { icon: FaGem, color: '#00CED1', size: 19, delay: 3.5 },
-        { icon: FaGift, color: '#FF1493', size: 13, delay: 4 },
-        { icon: FaCrown, color: '#FFD700', size: 21, delay: 4.5 }
+        { icon: FaCoffee, color: '#8B4513', size: 20, delay: 0 },
+        { icon: FaBirthdayCake, color: '#FF69B4', size: 18, delay: 1 },
+        { icon: FaStar, color: '#FFD700', size: 16, delay: 2 },
+        { icon: FaHeart, color: '#FF6B6B', size: 14, delay: 3 },
+        { icon: FaLeaf, color: '#32CD32', size: 12, delay: 4 },
+        { icon: FaSmile, color: '#FFA500', size: 15, delay: 5 },
+        { icon: FaMusic, color: '#9370DB', size: 13, delay: 6 },
+        { icon: FaGem, color: '#00CED1', size: 17, delay: 7 }
       ];
       setFloatingElements(elements);
     };
 
-    const generateCakeLayers = () => {
-      const layers = [
-        { color: 'from-pink-300 to-purple-300', size: 'w-48 h-32', rotation: 3, delay: 0 },
-        { color: 'from-yellow-200 to-orange-200', size: 'w-40 h-24', rotation: -2, delay: 0.2 },
-        { color: 'from-white to-pink-100', size: 'w-32 h-16', rotation: 1, delay: 0.4 }
-      ];
-      setCakeLayers(layers);
-    };
-
     generateParticles();
     generateFloatingElements();
-    generateCakeLayers();
   }, []);
 
   // Animate particles
@@ -68,12 +55,12 @@ export default function Register() {
       setParticles(prev => prev.map(particle => ({
         ...particle,
         y: particle.y - particle.speed,
-        x: particle.x + Math.sin(particle.y * 0.01) * 0.8,
-        opacity: particle.opacity + Math.sin(Date.now() * 0.001) * 0.15
+        x: particle.x + Math.sin(particle.y * 0.01) * 0.5,
+        opacity: particle.opacity + Math.sin(Date.now() * 0.001) * 0.1
       })).filter(particle => particle.y > -10));
     };
 
-    const interval = setInterval(animateParticles, 40);
+    const interval = setInterval(animateParticles, 50);
     return () => clearInterval(interval);
   }, []);
 
@@ -85,7 +72,7 @@ export default function Register() {
         <div 
           className="absolute inset-0 opacity-30"
           style={{
-            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 182, 193, 0.4) 0%, transparent 50%)`
+            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 107, 107, 0.3) 0%, transparent 50%)`
           }}
         />
       </div>
@@ -102,7 +89,7 @@ export default function Register() {
             height: particle.size,
             backgroundColor: particle.color,
             opacity: particle.opacity,
-            animation: `float ${Math.random() * 4 + 2}s ease-in-out infinite`
+            animation: `float ${Math.random() * 3 + 2}s ease-in-out infinite`
           }}
         />
       ))}
@@ -118,29 +105,28 @@ export default function Register() {
               left: `${Math.random() * 80 + 10}%`,
               top: `${Math.random() * 80 + 10}%`,
               animationDelay: `${element.delay}s`,
-              animationDuration: `${Math.random() * 4 + 2}s`
+              animationDuration: `${Math.random() * 3 + 2}s`
             }}
           >
             <Icon 
               size={element.size} 
               color={element.color}
-              className="opacity-20 hover:opacity-50 transition-opacity duration-300"
+              className="opacity-20 hover:opacity-40 transition-opacity duration-300"
             />
           </div>
         );
       })}
 
-      {/* Left Side - Registration Form */}
+      {/* Left Side - Login Form */}
       <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-orange-50 to-green-50 py-12 px-8 relative z-10">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-10 left-10 w-32 h-32 bg-orange-300 rounded-full blur-3xl animate-pulse opacity-20"></div>
           <div className="absolute bottom-20 right-20 w-40 h-40 bg-purple-300 rounded-full blur-3xl animate-pulse opacity-20" style={{animationDelay: '1s'}}></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-pink-300 rounded-full blur-3xl animate-pulse opacity-20" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-1/4 right-1/4 w-24 h-24 bg-yellow-300 rounded-full blur-2xl animate-pulse opacity-15" style={{animationDelay: '0.5s'}}></div>
         </div>
         
-        <RegisterForm />
+        <LoginForm />
       </div>
 
       {/* Right Side - 3D Illustration & Cafe Details */}
@@ -150,51 +136,40 @@ export default function Register() {
           <div className="absolute top-10 left-10 w-32 h-32 bg-orange-300 rounded-full blur-3xl animate-bounce"></div>
           <div className="absolute bottom-20 right-20 w-40 h-40 bg-purple-300 rounded-full blur-3xl animate-bounce" style={{animationDelay: '0.5s'}}></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-pink-300 rounded-full blur-3xl animate-bounce" style={{animationDelay: '1s'}}></div>
-          <div className="absolute top-1/4 right-1/4 w-24 h-24 bg-yellow-300 rounded-full blur-2xl animate-bounce" style={{animationDelay: '1.5s'}}></div>
         </div>
 
         {/* Main Content */}
         <div className="relative z-10 flex flex-col justify-center items-center text-center px-12 py-8">
-          {/* 3D Cake Illustration with enhanced animations */}
+          {/* 3D Coffee Cup Illustration with enhanced animations */}
           <div className="mb-8 transform hover:scale-105 transition-transform duration-500 animate-float-gentle">
             <div className="relative">
-              {/* Dynamic Cake Layers */}
-              {cakeLayers.map((layer, index) => (
-                <div
-                  key={index}
-                  className={`cake-layer absolute ${layer.size} bg-gradient-to-r ${layer.color} rounded-t-3xl shadow-2xl transform rotate-${layer.rotation} hover:rotate-0 transition-transform duration-500 animate-cake-layer`}
-                  style={{
-                    top: index * 4,
-                    left: index * 4,
-                    animationDelay: `${layer.delay}s`,
-                    zIndex: cakeLayers.length - index
-                  }}
-                />
-              ))}
+              {/* Coffee Cup with steam animation */}
+              <div className="w-48 h-40 bg-gradient-to-r from-amber-200 to-amber-300 rounded-t-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500 relative animate-pulse">
+                {/* Cup Handle */}
+                <div className="absolute -right-4 top-8 w-8 h-16 border-4 border-amber-300 rounded-r-full"></div>
+                {/* Coffee Liquid with wave effect */}
+                <div className="absolute inset-2 bg-gradient-to-r from-amber-600 to-amber-800 rounded-t-2xl animate-wave"></div>
+                {/* Enhanced Steam */}
+                <div className="absolute -top-4 left-1/4 w-2 h-6 bg-gray-300 rounded-full opacity-60 animate-steam"></div>
+                <div className="absolute -top-6 left-1/3 w-1 h-4 bg-gray-300 rounded-full opacity-40 animate-steam" style={{animationDelay: '0.5s'}}></div>
+                <div className="absolute -top-5 right-1/3 w-1.5 h-5 bg-gray-300 rounded-full opacity-50 animate-steam" style={{animationDelay: '1s'}}></div>
+                <div className="absolute -top-7 left-1/2 w-1 h-3 bg-gray-300 rounded-full opacity-30 animate-steam" style={{animationDelay: '1.5s'}}></div>
+              </div>
               
-              {/* Enhanced Cake Decoration */}
-              <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-red-400 rounded-full shadow-md animate-pulse"></div>
-              <div className="absolute top-6 left-1/3 w-3 h-3 bg-yellow-400 rounded-full shadow-md animate-pulse" style={{animationDelay: '0.5s'}}></div>
-              <div className="absolute top-6 right-1/3 w-3 h-3 bg-blue-400 rounded-full shadow-md animate-pulse" style={{animationDelay: '1s'}}></div>
-              <div className="absolute top-4 left-1/4 w-2 h-2 bg-green-400 rounded-full shadow-md animate-pulse" style={{animationDelay: '1.5s'}}></div>
-              <div className="absolute top-4 right-1/4 w-2 h-2 bg-purple-400 rounded-full shadow-md animate-pulse" style={{animationDelay: '2s'}}></div>
-              
-              {/* Enhanced Candle */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-1 h-8 bg-yellow-300 rounded-full shadow-md animate-flicker"></div>
-              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-orange-400 rounded-full animate-flame"></div>
-              <div className="absolute -top-7 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-yellow-200 rounded-full animate-sparkle"></div>
+              {/* Saucer with glow effect */}
+              <div className="absolute -bottom-2 left-2 w-44 h-6 bg-gradient-to-r from-amber-100 to-amber-200 rounded-full shadow-lg animate-glow"></div>
             </div>
           </div>
 
-          {/* Real Cake Images Gallery with enhanced animations */}
+          {/* Real Coffee Images Gallery with enhanced animations */}
           <div className="grid grid-cols-3 gap-4 mb-8 max-w-md">
             {[
-              { src: "/cake/cake1.webp", alt: "Delicious Cake", delay: 0 },
-              { src: "/cake/cake2.jpg", alt: "Beautiful Cake", delay: 0.1 },
-              { src: "/cake/cake3.webp", alt: "Special Cake", delay: 0.2 },
-              { src: "/cake/cake4.jpg", alt: "Vanilla Cake", delay: 0.3 },
-              { src: "/cake/Vanilla-Cake-1.jpg", alt: "Vanilla Cake", delay: 0.4 },
-              { src: "/cake/cake 7.webp", alt: "Special Cake", delay: 0.5 }
+              { src: "/images/coffee.jpg", alt: "Artisan Coffee", delay: 0 },
+              { src: "/images/donut.jpg", alt: "Fresh Donut", delay: 0.1 },
+              { src: "/images/cupcake.png", alt: "Delicious Cupcake", delay: 0.2 },
+              { src: "/images/food-table.jpg", alt: "Cafe Table", delay: 0.3 },
+              { src: "/images/salad-table.jpg", alt: "Fresh Salad", delay: 0.4 },
+              { src: "/images/jars.jpg", alt: "Cafe Jars", delay: 0.5 }
             ].map((image, index) => (
               <div 
                 key={index}
@@ -212,29 +187,29 @@ export default function Register() {
 
           {/* Cafe Title with animated gradient */}
           <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 bg-clip-text text-transparent mb-4 animate-gradient-text">
-            Mini Cafe
+            Welcome Back to Mini Cafe
           </h1>
           
           <p className="text-xl text-gray-700 mb-8 max-w-md animate-fade-in-up" style={{animationDelay: '0.6s'}}>
-            Experience the perfect blend of comfort, creativity, and culinary excellence
+            Sign in to access your account and enjoy our delicious offerings
           </p>
 
-          {/* Cafe Features with enhanced animations */}
+          {/* Login Benefits with enhanced animations */}
           <div className="grid grid-cols-2 gap-6 mb-8">
             {[
-              { icon: FaCoffee, title: "Artisan Coffee", desc: "Handcrafted with love", color: "text-orange-600", delay: 0.7 },
-              { icon: FaBirthdayCake, title: "Fresh Pastries", desc: "Baked daily", color: "text-pink-600", delay: 0.8 },
-              { icon: FaHeart, title: "Cozy Atmosphere", desc: "Perfect for relaxation", color: "text-red-500", delay: 0.9 },
-              { icon: FaUsers, title: "Community", desc: "Join our family", color: "text-blue-600", delay: 1.0 }
-            ].map((feature, index) => (
+              { icon: FaUserCheck, title: "Quick Access", desc: "Save your preferences", color: "text-green-600", delay: 0.7 },
+              { icon: FaShieldAlt, title: "Secure Login", desc: "Your data is protected", color: "text-blue-600", delay: 0.8 },
+              { icon: FaHeart, title: "Personalized", desc: "Tailored experience", color: "text-red-500", delay: 0.9 },
+              { icon: FaClock, title: "Fast Service", desc: "Quick and easy", color: "text-purple-600", delay: 1.0 }
+            ].map((benefit, index) => (
               <div 
                 key={index}
                 className="flex flex-col items-center p-4 bg-white/30 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/40 transition-all duration-300 transform hover:scale-105 animate-fade-in-up"
-                style={{ animationDelay: `${feature.delay}s` }}
+                style={{ animationDelay: `${benefit.delay}s` }}
               >
-                <feature.icon className={`w-8 h-8 ${feature.color} mb-2 animate-bounce`} style={{animationDelay: `${feature.delay + 0.5}s`}} />
-                <h3 className="font-semibold text-gray-800">{feature.title}</h3>
-                <p className="text-sm text-gray-600">{feature.desc}</p>
+                <benefit.icon className={`w-8 h-8 ${benefit.color} mb-2 animate-bounce`} style={{animationDelay: `${benefit.delay + 0.5}s`}} />
+                <h3 className="font-semibold text-gray-800">{benefit.title}</h3>
+                <p className="text-sm text-gray-600">{benefit.desc}</p>
               </div>
             ))}
           </div>
@@ -242,25 +217,22 @@ export default function Register() {
           {/* Stats with counting animation */}
           <div className="flex items-center justify-center space-x-8 text-center">
             {[
-              { number: "500+", label: "Happy Customers", color: "text-orange-600" },
-              { number: "50+", label: "Unique Recipes", color: "text-pink-600" },
-              { number: "4.9", label: "Rating", color: "text-purple-600" }
+              { number: "1000+", label: "Active Members", color: "text-orange-600" },
+              { number: "24/7", label: "Online Access", color: "text-pink-600" },
+              { number: "99.9%", label: "Uptime", color: "text-purple-600" }
             ].map((stat, index) => (
               <div key={index} className="flex flex-col items-center animate-fade-in-up" style={{animationDelay: `${1.1 + index * 0.1}s`}}>
                 <div className={`text-2xl font-bold ${stat.color} animate-count-up`}>{stat.number}</div>
-                <div className="flex items-center text-sm text-gray-600">
-                  {stat.label === "Rating" && <FaStar className="w-4 h-4 text-yellow-400 fill-current mr-1 animate-pulse" />}
-                  {stat.label}
-                </div>
+                <div className="text-sm text-gray-600">{stat.label}</div>
               </div>
             ))}
           </div>
 
-          {/* Special Offer with enhanced animation */}
-          <div className="mt-8 p-4 bg-gradient-to-r from-orange-400 to-pink-400 rounded-xl text-white shadow-lg transform hover:scale-105 transition-transform duration-300 animate-fade-in-up" style={{animationDelay: '1.4s'}}>
+          {/* Special Message with enhanced animation */}
+          <div className="mt-8 p-4 bg-gradient-to-r from-green-400 to-blue-400 rounded-xl text-white shadow-lg transform hover:scale-105 transition-transform duration-300 animate-fade-in-up" style={{animationDelay: '1.4s'}}>
             <div className="flex items-center justify-center space-x-2">
               <FaStar className="w-5 h-5 animate-spin" />
-              <span className="font-semibold">Get 20% off on your first order!</span>
+              <span className="font-semibold">Welcome back! We missed you!</span>
               <FaStar className="w-5 h-5 animate-spin" style={{animationDirection: 'reverse'}} />
             </div>
           </div>
@@ -283,12 +255,6 @@ export default function Register() {
           </div>
           <div className="absolute top-1/2 right-1/4 animate-pulse" style={{animationDelay: '2s'}}>
             <div className="w-7 h-7 bg-blue-400 rounded-full shadow-lg opacity-40"></div>
-          </div>
-          <div className="absolute top-1/3 left-1/4 animate-float-gentle" style={{animationDelay: '1.5s'}}>
-            <div className="w-4 h-4 bg-red-400 rounded-full shadow-lg"></div>
-          </div>
-          <div className="absolute bottom-1/3 left-1/3 animate-bounce" style={{animationDelay: '0.5s'}}>
-            <div className="w-6 h-6 bg-purple-400 rounded-full shadow-lg opacity-30"></div>
           </div>
         </div>
 
